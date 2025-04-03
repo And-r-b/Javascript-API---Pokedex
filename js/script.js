@@ -18,17 +18,35 @@ async function getData(url) {
 const mainContainerEl = document.getElementById("main-container")
 
 // Displays details about a pokemon in the mainContainerEl
-function displayPokemon() {
+async function displayPokemonDetails(data) {
+    
+    const pokemonDetails = await getData(data.url)
+    console.log(pokemonDetails)
 
+    const wrapperEl = document.createElement("div") // wrapper for each pokemon
+    wrapperEl.style.outline = "2px solid blue"
+    const pokemonName = document.createElement("h3") // for name
+    const pokemonImage = document.createElement("img") // for img
+
+    wrapperEl.append(pokemonName, pokemonImage)
+
+    pokemonName.textContent = data.name
+    pokemonImage.alt = data.name
+
+    // clear the page and display the pokemon
+    mainContainerEl.innerHTML = ""
+    mainContainerEl.append(wrapperEl)
 }
 // Display a list of pokemona in the mainContainerEl
-function displayPokemonList(pokemonList) {
-    // let onePokemon = pokemonList[0]
+// function recives a promise object
+async function displayPokemonList(pokemonListPromise) {
+    
+    const pokemonList = await pokemonListPromise
 
-    // mainContainerEl.innerHTML += onePokemon.name
-
-    pokemonList.forEach(pokemon => {
+    
+    pokemonList.results.forEach(pokemon => {
         const wrapperEl = document.createElement("div") // wrapper for each pokemon
+        wrapperEl.style.outline = "2px solid blue"
         const pokemonName = document.createElement("h3") // for name
         const pokemonImage = document.createElement("img") // for img
     
@@ -36,6 +54,8 @@ function displayPokemonList(pokemonList) {
     
         pokemonName.textContent = pokemon.name
         pokemonImage.alt = pokemon.name
+        // add click event int to the wrapperEl
+        wrapperEl.addEventListener("click", () => displayPokemonDetails("hi"))
     
         mainContainerEl.append(wrapperEl)
         // later on: image tag, list of starts, url to pokemon - detail page?
@@ -44,10 +64,10 @@ function displayPokemonList(pokemonList) {
 
 }
 
-let testPokemonList = [
-    {"name":"bulbasaur","url":"https://pokeapi.co/api/v2/pokemon/1/"},
-    {"name":"ivysaur","url":"https://pokeapi.co/api/v2/pokemon/2/"}
-]
+// let testPokemonList = [
+//     {"name":"bulbasaur","url":"https://pokeapi.co/api/v2/pokemon/1/"},
+//     {"name":"ivysaur","url":"https://pokeapi.co/api/v2/pokemon/2/"}
+// ]
 
 
-displayPokemonList(testPokemonList);
+displayPokemonList(getData(apiUrl));
