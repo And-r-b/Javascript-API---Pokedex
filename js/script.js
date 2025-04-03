@@ -19,9 +19,9 @@ const mainContainerEl = document.getElementById("main-container")
 
 // Displays details about a pokemon in the mainContainerEl
 async function displayPokemonDetails(data) {
-    
+    console.log(data)
     const pokemonDetails = await getData(data.url)
-    console.log(pokemonDetails)
+    console.log(pokemonDetails.sprites.other.official-artwork)
 
     const wrapperEl = document.createElement("div") // wrapper for each pokemon
     wrapperEl.style.outline = "2px solid blue"
@@ -55,7 +55,7 @@ async function displayPokemonList(pokemonListPromise) {
         pokemonName.textContent = pokemon.name
         pokemonImage.alt = pokemon.name
         // add click event int to the wrapperEl
-        wrapperEl.addEventListener("click", () => displayPokemonDetails("hi"))
+        wrapperEl.addEventListener("click", () => displayPokemonDetails(pokemon))
     
         mainContainerEl.append(wrapperEl)
         // later on: image tag, list of starts, url to pokemon - detail page?
