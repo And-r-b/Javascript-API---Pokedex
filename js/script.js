@@ -23,12 +23,25 @@ function displayPokemon() {
 }
 // Display a list of pokemona in the mainContainerEl
 function displayPokemonList(pokemonList) {
-    let onePokemon = pokemonList[0]
+    // let onePokemon = pokemonList[0]
 
     // mainContainerEl.innerHTML += onePokemon.name
 
-    document.createElement("h3") // for name
-    // later on: image tag, list of starts, url to pokemon - detail page?
+    pokemonList.forEach(pokemon => {
+        const wrapperEl = document.createElement("div") // wrapper for each pokemon
+        const pokemonName = document.createElement("h3") // for name
+        const pokemonImage = document.createElement("img") // for img
+    
+        wrapperEl.append(pokemonName, pokemonImage)
+    
+        pokemonName.textContent = pokemon.name
+        pokemonImage.alt = pokemon.name
+    
+        mainContainerEl.append(wrapperEl)
+        // later on: image tag, list of starts, url to pokemon - detail page?
+    });
+
+
 }
 
 let testPokemonList = [
