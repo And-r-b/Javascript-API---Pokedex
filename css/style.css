@@ -114,6 +114,14 @@ nav {
     animation: fadeIn 1s ease;
 }
 
+#pokemon-image {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    display: block;
+    margin: 0 auto; /* centers the image horizontally */
+}
+
 /* Fade-in effect */
 @keyframes fadeIn {
     from {
@@ -126,16 +134,35 @@ nav {
     }
 }
 
-/* Media query for tablets and smaller screens (responsive) */
+
+/* Tablet screens (max-width: 768px) */
 @media (max-width: 768px) {
     #main-container {
-        grid-template-columns: repeat(3, 1fr); /* 3 cards per row on tablets */
+        grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+    }
+
+    .pokemon-card img {
+        max-width: 150px; /* Adjust image size on tablets */
+    }
+
+    #modal {
+        max-width: 95%; /* Make modal wider on smaller screens */
+        max-height: 70%; /* Adjust modal height for tablets */
     }
 }
 
-/* Media query for phones (portrait mode) */
+/* Phone screens (max-width: 480px) */
 @media (max-width: 480px) {
     #main-container {
-        grid-template-columns: 1fr; /* 1 card per row on small phones */
+        grid-template-columns: 1fr; /* 1 card per row on phones */
+    }
+
+    .pokemon-card img {
+        max-width: 120px; /* Adjust image size on phones */
+    }
+
+    #modal {
+        max-width: 95%; /* Make modal even wider on small screens */
+        max-height: 60%; /* Adjust modal height for small phones */
     }
 }
