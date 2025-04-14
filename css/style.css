@@ -19,19 +19,21 @@ nav {
 
 #main-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two columns per row */
-    max-width: 800px;
+    grid-template-columns: repeat(5, 1fr); /* Adjust this number to control how many cards per row */
+    grid-template-rows: auto; /* Let the rows adjust based on content */
+    max-width: 1200px;
     margin: 0 auto;
-    justify-items: center;
-    padding: 10px; /* Reduced padding inside the container */
+    gap: 35px; /* Add some gap between the cards */
+    padding: 10px;
+    justify-items: center; /* Center items within the grid cells */
 }
 
 /* Pokemon Card Styles */
 .pokemon-card {
     outline: 2px solid #3498db;
     border-radius: 10px;
-    padding: 10px; /* Reduced padding inside the card */
-    width: 80%; /* Make card take full width of the grid column */
+    padding: 10px;
+    width: 100%; /* Card takes full width within the grid cell */
     text-align: center;
     background-color: #f8f8f8;
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
