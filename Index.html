@@ -3,25 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Javascript API Pokedex</title>
+    <title>Simplify Pokedèx</title>
     <link rel="stylesheet" href="./css/style.css">
     <script src="./js/script.js" defer></script>
 </head>
 <body>
+    <h1>Simplify Pokedèx</h1>
     <!-- Navbar -->
     <nav>
-        <button id=btn-home">Home</button>
-        <button id=btn-prev">Prev</button>
-        <button id=btn-next">Next</button>
-        <!-- Search functionality -->
-        <input id="search-text" type="text">
+        <button id="btn-home">Home</button>
+        <button id="btn-prev">Prev</button>
+        <button id="btn-next">Next</button>
+        <input id="search-text" type="text" placeholder="Search Pokémon">
         <button id="btn-search">Search</button>
     </nav>
-    <!-- Error message container -->
-    <p id="error-message">Something went wrong!</p>
+    <!-- Loading spinner -->
+    <div id="loading-spinner" style="display:none; text-align:center; margin:20px;">
+        <div class="spinner"></div>
+    </div>
 
-
-    <!-- Main container for pokemon list or pokemon details -->
+    <p id="error-message" style="display:none;color:red;">Something went wrong!</p>
     <div id="main-container"></div>
 </body>
 </html>

@@ -1,73 +1,149 @@
-// API root url
-const apiUrl = "https://pokeapi.co/api/v2/pokemon?offset=0&limit=10"
+let offset = 0;
+const limit = 24;
+const baseApiUrl = "https://pokeapi.co/api/v2/pokemon";
 
-// gets data from given url param
-// return a promise with data or and error
+const mainContainerEl = document.getElementById("main-container");
+const errorEl = document.getElementById("error-message");
+const btnNext = document.getElementById("btn-next");
+const btnPrev = document.getElementById("btn-prev");
+const btnSearch = document.getElementById("btn-search");
+const inputSearch = document.getElementById("search-text");
+const btnHome = document.getElementById("btn-home");
+
+function clearMainContainer() {
+    mainContainerEl.innerHTML = "";
+    errorEl.style.display = "none";
+}
+
+const loadingSpinner = document.getElementById("loading-spinner");
+
+function showSpinner() {
+    loadingSpinner.style.display = "block";
+}
+
+function hideSpinner() {
+    loadingSpinner.style.display = "none";
+}
+
+
+// Get JSON data from URL
 async function getData(url) {
-    const request = await fetch(apiUrl)
-    const data = await request.json()
-    
-    //console.log(data)
-    return data
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("API Error");
+    return await res.json();
 }
 
-// let myData = getData(apiUrl)
-// console.log(myData)
+// Show one Pokémon with full info
+async function displayPokemonDetails(pokemon) {
+    try {
+        showSpinner();
+        clearMainContainer();
 
-// get html elements
-const mainContainerEl = document.getElementById("main-container")
+        let url = typeof pokemon === "string" ? `${baseApiUrl}/${pokemon.toLowerCase()}` : pokemon.url;
+        const data = await getData(url);
 
-// Displays details about a pokemon in the mainContainerEl
-async function displayPokemonDetails(data) {
-    console.log(data)
-    const pokemonDetails = await getData(data.url)
-    console.log(pokemonDetails.sprites.other.official-artwork)
+        const wrapper = document.createElement("div");
+        wrapper.style.outline = "2px solid green";
+        wrapper.style.padding = "10px";
 
-    const wrapperEl = document.createElement("div") // wrapper for each pokemon
-    wrapperEl.style.outline = "2px solid blue"
-    const pokemonName = document.createElement("h3") // for name
-    const pokemonImage = document.createElement("img") // for img
+        const name = document.createElement("h2");
+        name.textContent = data.name;
 
-    wrapperEl.append(pokemonName, pokemonImage)
+        const image = document.createElement("img");
+        image.src = data.sprites.other["official-artwork"].front_default;
+        image.alt = data.name;
+        image.style.width = "200px";
 
-    pokemonName.textContent = data.name
-    pokemonImage.alt = data.name
+        const types = document.createElement("p");
+        types.textContent = `Types: ${data.types.map(t => t.type.name).join(", ")}`;
 
-    // clear the page and display the pokemon
-    mainContainerEl.innerHTML = ""
-    mainContainerEl.append(wrapperEl)
-}
-// Display a list of pokemona in the mainContainerEl
-// function recives a promise object
-async function displayPokemonList(pokemonListPromise) {
-    
-    const pokemonList = await pokemonListPromise
+        const abilities = document.createElement("p");
+        abilities.textContent = `Abilities: ${data.abilities.map(a => a.ability.name).join(", ")}`;
 
-    
-    pokemonList.results.forEach(pokemon => {
-        const wrapperEl = document.createElement("div") // wrapper for each pokemon
-        wrapperEl.style.outline = "2px solid blue"
-        const pokemonName = document.createElement("h3") // for name
-        const pokemonImage = document.createElement("img") // for img
-    
-        wrapperEl.append(pokemonName, pokemonImage)
-    
-        pokemonName.textContent = pokemon.name
-        pokemonImage.alt = pokemon.name
-        // add click event int to the wrapperEl
-        wrapperEl.addEventListener("click", () => displayPokemonDetails(pokemon))
-    
-        mainContainerEl.append(wrapperEl)
-        // later on: image tag, list of starts, url to pokemon - detail page?
-    });
+        const stats = document.createElement("ul");
+        stats.textContent = "Stats:";
+        data.stats.forEach(stat => {
+            const li = document.createElement("li");
+            li.textContent = `${stat.stat.name}: ${stat.base_stat}`;
+            stats.appendChild(li);
+        });
 
-
+        wrapper.append(name, image, types, abilities, stats);
+        mainContainerEl.append(wrapper);
+    } catch (err) {
+        showError("Pokémon not found.");
+    } finally {
+        hideSpinner();
+    }
 }
 
-// let testPokemonList = [
-//     {"name":"bulbasaur","url":"https://pokeapi.co/api/v2/pokemon/1/"},
-//     {"name":"ivysaur","url":"https://pokeapi.co/api/v2/pokemon/2/"}
-// ]
+// Show a list of Pokémon with names and images
+async function displayPokemonList() {
+    try {
+        showSpinner();
+        clearMainContainer();
+        const url = `${baseApiUrl}?offset=${offset}&limit=${limit}`;
+        const list = await getData(url);
 
+        for (const pokemon of list.results) {
+            const data = await getData(pokemon.url);
 
-displayPokemonList(getData(apiUrl));
+            const wrapper = document.createElement("div");
+            wrapper.style.outline = "2px solid blue";
+            wrapper.style.margin = "10px";
+            wrapper.style.cursor = "pointer";
+            wrapper.style.display = "inline-block";
+            wrapper.style.width = "150px";
+            wrapper.style.textAlign = "center";
+
+            const name = document.createElement("h3");
+            name.textContent = data.name;
+
+            const image = document.createElement("img");
+            image.src = data.sprites.other["official-artwork"].front_default;
+            image.alt = data.name;
+            image.style.width = "100px";
+
+            wrapper.append(name, image);
+            wrapper.addEventListener("click", () => displayPokemonDetails(pokemon));
+
+            mainContainerEl.append(wrapper);
+        }
+    } catch (err) {
+        showError("Failed to load Pokémon list.");
+    } finally {
+        hideSpinner();
+    }
+}
+
+function showError(message) {
+    errorEl.style.display = "block";
+    errorEl.textContent = message;
+}
+
+// === Event Listeners ===
+btnNext.addEventListener("click", () => {
+    offset += limit;
+    displayPokemonList();
+});
+
+btnPrev.addEventListener("click", () => {
+    if (offset >= limit) {
+        offset -= limit;
+        displayPokemonList();
+    }
+});
+
+btnSearch.addEventListener("click", () => {
+    const query = inputSearch.value.trim();
+    if (query) {
+        displayPokemonDetails(query);
+    }
+});
+
+btnHome.addEventListener("click", () => {
+    displayPokemonList();
+});
+
+// Load list on page start
+displayPokemonList();
