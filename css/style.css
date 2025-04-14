@@ -125,3 +125,17 @@ nav {
         transform: translateY(0);
     }
 }
+
+/* Media query for tablets and smaller screens (responsive) */
+@media (max-width: 768px) {
+    #main-container {
+        grid-template-columns: repeat(3, 1fr); /* 3 cards per row on tablets */
+    }
+}
+
+/* Media query for phones (portrait mode) */
+@media (max-width: 480px) {
+    #main-container {
+        grid-template-columns: 1fr; /* 1 card per row on small phones */
+    }
+}
