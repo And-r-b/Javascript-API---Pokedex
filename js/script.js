@@ -1,5 +1,5 @@
 let offset = 0;
-const limit = 24;
+const limit = 10;
 const baseApiUrl = "https://pokeapi.co/api/v2/pokemon";
 
 const mainContainerEl = document.getElementById("main-container");
