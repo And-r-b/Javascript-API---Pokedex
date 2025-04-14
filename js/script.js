@@ -25,6 +25,10 @@ function hideSpinner() {
     loadingSpinner.style.display = "none";
 }
 
+function captilizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 
 // Get JSON data from URL
 async function getData(url) {
@@ -47,7 +51,7 @@ async function displayPokemonDetails(pokemon) {
         wrapper.style.padding = "10px";
 
         const name = document.createElement("h2");
-        name.textContent = data.name;
+        name.textContent = captilizeFirstLetter(data.name);
 
         const image = document.createElement("img");
         image.src = data.sprites.other["official-artwork"].front_default;
@@ -97,7 +101,7 @@ async function displayPokemonList() {
             wrapper.style.textAlign = "center";
 
             const name = document.createElement("h3");
-            name.textContent = data.name;
+            name.textContent = captilizeFirstLetter(data.name);
 
             const image = document.createElement("img");
             image.src = data.sprites.other["official-artwork"].front_default;
