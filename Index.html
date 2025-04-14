@@ -17,12 +17,28 @@
         <input id="search-text" type="text" placeholder="Search Pokémon">
         <button id="btn-search">Search</button>
     </nav>
+    
     <!-- Loading spinner -->
     <div id="loading-spinner" style="display:none; text-align:center; margin:20px;">
         <div class="spinner"></div>
     </div>
 
+    <!-- Error message -->
     <p id="error-message" style="display:none;color:red;">Something went wrong!</p>
+    
+    <!-- Main container where Pokémon cards will be displayed -->
     <div id="main-container"></div>
+
+    <!-- Modal for displaying Pokémon details -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">×</span>
+            <h2 id="pokemon-name"></h2>
+            <img id="pokemon-image" src="" alt="Pokemon">
+            <p id="pokemon-types"></p>
+            <p id="pokemon-abilities"></p>
+            <ul id="pokemon-stats"></ul>
+        </div>
+    </div>
 </body>
 </html>

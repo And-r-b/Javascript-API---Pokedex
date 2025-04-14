@@ -37,7 +37,7 @@ async function getData(url) {
     return await res.json();
 }
 
-// Show one Pokémon with full info
+// Show one Pokémon with full info in a modal
 async function displayPokemonDetails(pokemon) {
     try {
         showSpinner();
@@ -46,40 +46,46 @@ async function displayPokemonDetails(pokemon) {
         let url = typeof pokemon === "string" ? `${baseApiUrl}/${pokemon.toLowerCase()}` : pokemon.url;
         const data = await getData(url);
 
-        const wrapper = document.createElement("div");
-        wrapper.style.outline = "2px solid green";
-        wrapper.style.padding = "10px";
-
-        const name = document.createElement("h2");
-        name.textContent = captilizeFirstLetter(data.name);
-
-        const image = document.createElement("img");
-        image.src = data.sprites.other["official-artwork"].front_default;
-        image.alt = data.name;
-        image.style.width = "200px";
-
-        const types = document.createElement("p");
-        types.textContent = `Types: ${data.types.map(t => t.type.name).join(", ")}`;
-
-        const abilities = document.createElement("p");
-        abilities.textContent = `Abilities: ${data.abilities.map(a => a.ability.name).join(", ")}`;
-
-        const stats = document.createElement("ul");
-        stats.textContent = "Stats:";
+        // Fill in the modal with the Pokémon's details
+        document.getElementById("pokemon-name").textContent = captilizeFirstLetter(data.name);
+        document.getElementById("pokemon-image").src = data.sprites.other["official-artwork"].front_default;
+        document.getElementById("pokemon-image").alt = data.name;
+        
+        // Display types
+        document.getElementById("pokemon-types").textContent = `Types: ${data.types.map(t => t.type.name).join(", ")}`;
+        
+        // Display abilities
+        document.getElementById("pokemon-abilities").textContent = `Abilities: ${data.abilities.map(a => a.ability.name).join(", ")}`;
+        
+        // Display stats
+        const statsList = document.getElementById("pokemon-stats");
+        statsList.innerHTML = ''; // Clear previous stats
         data.stats.forEach(stat => {
             const li = document.createElement("li");
             li.textContent = `${stat.stat.name}: ${stat.base_stat}`;
-            stats.appendChild(li);
+            statsList.appendChild(li);
         });
 
-        wrapper.append(name, image, types, abilities, stats);
-        mainContainerEl.append(wrapper);
+        // Display the modal
+        document.getElementById("modal").style.display = "flex";
     } catch (err) {
         showError("Pokémon not found.");
     } finally {
         hideSpinner();
     }
 }
+
+// Close the modal
+function closeModal() {
+    document.getElementById("modal").style.display = "none";
+}
+
+// Event listener for closing modal when clicking outside the modal content
+document.getElementById("modal").addEventListener("click", (e) => {
+    if (e.target === document.getElementById("modal")) {
+        closeModal();
+    }
+});
 
 // Show a list of Pokémon with names and images
 async function displayPokemonList() {
@@ -92,13 +98,9 @@ async function displayPokemonList() {
         for (const pokemon of list.results) {
             const data = await getData(pokemon.url);
 
+            // Create a wrapper for each Pokémon card
             const wrapper = document.createElement("div");
-            wrapper.style.outline = "2px solid blue";
-            wrapper.style.margin = "10px";
-            wrapper.style.cursor = "pointer";
-            wrapper.style.display = "inline-block";
-            wrapper.style.width = "150px";
-            wrapper.style.textAlign = "center";
+            wrapper.className = "pokemon-card"; // instead of inline styles
 
             const name = document.createElement("h3");
             name.textContent = captilizeFirstLetter(data.name);
