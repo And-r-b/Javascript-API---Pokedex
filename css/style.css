@@ -1,7 +1,8 @@
 /* Body and General Styles */
-body {
+html, body {
     font-family: Arial, sans-serif;
     background-color: #72b835;
+    height: 100%;
     margin: 0;
     padding: 20px;
 }
@@ -77,6 +78,7 @@ nav {
     background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
     justify-content: center;
     align-items: center;
+    overflow: auto; /* Ensure content is scrollable if it overflows */
 }
 
 /* Modal content styling */
@@ -146,8 +148,8 @@ nav {
     }
 
     #modal {
-        max-width: 95%; /* Make modal wider on smaller screens */
-        max-height: 70%; /* Adjust modal height for tablets */
+        max-width: 100%; /* Make modal wider on smaller screens */
+        max-height: 100%; /* Adjust modal height for tablets */
     }
 }
 
@@ -162,7 +164,7 @@ nav {
     }
 
     #modal {
-        max-width: 95%; /* Make modal even wider on small screens */
-        max-height: 60%; /* Adjust modal height for small phones */
+        max-width: 100%; /* Make modal even wider on small screens */
+        max-height: 100%; /* Adjust modal height for small phones */
     }
 }
